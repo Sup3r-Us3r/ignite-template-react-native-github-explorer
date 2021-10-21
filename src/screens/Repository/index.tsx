@@ -36,8 +36,11 @@ export function Repository() {
   const { findRepositoryById } = useRepositories();
   const repository = findRepositoryById(repositoryId);
 
+  const repositoryData = findRepositoryById(repositoryId);
+
   function handleIssueNavigation(issueUrl: string) {
     // TODO - use Linking to open issueUrl in a browser
+    Linking.openURL(issueUrl);
   }
 
   return (
@@ -45,16 +48,19 @@ export function Repository() {
       <Container>
         <RepoInfo>
           {/* <OwnerAvatar source={{ uri:  }} /> */}
+          <OwnerAvatar source={{ uri: repositoryData.owner.avatar_url }} />
 
           <TextGroup>
             <TitleAnimation>
               {
                 // TODO - full name of the repository
+                repositoryData.full_name
               }
             </TitleAnimation>
 
             <Description numberOfLines={2}>{
               //TODO - repository description
+              repositoryData.description
             }</Description>
           </TextGroup>
         </RepoInfo>
@@ -63,6 +69,7 @@ export function Repository() {
           <Stars>
             <StarsCounter>{
               // TODO - repository stargazers count
+              repositoryData.stargazers_count
             }</StarsCounter>
             <StarsText>Stars</StarsText>
           </Stars>
@@ -70,6 +77,7 @@ export function Repository() {
           <Forks>
             <ForksCounter>{
               // TODO - repository forks count
+              repositoryData.forks_count
             }</ForksCounter>
             <ForksText>Forks</ForksText>
           </Forks>
@@ -77,6 +85,7 @@ export function Repository() {
           <OpenIssues>
             <OpenIssuesCounter>{
               // TODO - repository issues count
+              repositoryData.issues.length
             }</OpenIssuesCounter>
             <OpenIssuesText>Issues{'\n'}Abertas</OpenIssuesText>
           </OpenIssues>
@@ -94,6 +103,7 @@ export function Repository() {
                 subTitle: issue.user.login,
               }}
             // TODO - onPress prop calling 
+              onPress={() => handleIssueNavigation(issue.html_url)}
             />
           )}
         />
